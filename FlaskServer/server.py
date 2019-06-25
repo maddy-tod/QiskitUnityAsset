@@ -2,7 +2,9 @@
 from flask import request, Flask
 from flask import jsonify
 from api import run_qasm
-from tictactoe import terra_move
+from terra import terra_move
+from grover import grover_move
+from vqc import vqc_move
 import json
 
 app = Flask(__name__)
@@ -26,15 +28,36 @@ def qasm():
 @app.route('/tictactoe/player/terra', methods=['POST'])
 def terra():
     board = request.form.get('board')
-    print("--------------")
-    print (board)
-    print(request.get_data())
-    print (request.form)
-
     board = board.split(',')
 
     (move, t_counts) = terra_move(board)
     ret = {"move": move, "t_counts": t_counts}
+
+    print('sending : ', ret)
+    return jsonify(ret)
+
+@app.route('/tictactoe/player/grover', methods=['POST'])
+def grover():
+
+    print('GROVER');
+    board = request.form.get('board')
+    board = board.split(',')
+
+    move = grover_move(board)
+    ret = {"move": move}
+
+    print('sending : ', ret)
+    return jsonify(ret)
+
+@app.route('/tictactoe/player/vqc', methods=['POST'])
+def vqc():
+
+    print('VQC');
+    board = request.form.get('board')
+    board = board.split(',')
+
+    move = vqc_move(board)
+    ret = {"move": move}
 
     print('sending : ', ret)
     return jsonify(ret)
