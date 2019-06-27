@@ -13,10 +13,10 @@ def grover_move(board):
         return
 
     # add the oracle
-    GroverQPlayer._oracle(groverCircuit, registers[0])
+    _oracle(groverCircuit, registers[0])
 
     # add the diffusion operator
-    GroverQPlayer._inversion_about_average(groverCircuit, registers[0], 3)
+    _inversion_about_average(groverCircuit, registers[0], 3)
 
     # measure the results
     groverCircuit.measure(registers[0], registers[1])
@@ -53,7 +53,8 @@ def _board_to_superposition(board):
     # have to strip off the last thing to fit into 3 qubits
     board = board[:-1]
 
-    spaces = [i for i, space in enumerate(board) if space is None]
+    print(board)
+    spaces = [i for i, space in enumerate(board) if int(space) == -1]
 
     print('spaces at ', spaces)
 
@@ -97,7 +98,7 @@ def _inversion_about_average(circuit, register, n):
     """Apply inversion about the average step of Grover's algorithm."""
     circuit.h(register)
     circuit.x(register)
-    GroverQPlayer._n_controlled_Z(circuit, [register[j] for j in range(n - 1)], register[n - 1])
+    _n_controlled_Z(circuit, [register[j] for j in range(n - 1)], register[n - 1])
     circuit.x(register)
     circuit.h(register)
 

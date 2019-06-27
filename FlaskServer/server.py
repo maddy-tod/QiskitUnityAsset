@@ -5,6 +5,7 @@ from api import run_qasm
 from terra import terra_move
 from grover import grover_move
 from vqc import vqc_move
+import vqc as VQC
 import json
 
 app = Flask(__name__)
@@ -24,6 +25,12 @@ def qasm():
     output = run_qasm(qasm, backend)
     ret = {"result": output}
     return jsonify(ret)
+
+@app.route('/tictactoe/begin', methods=['GET'])
+def start():
+    VQC.setup()
+    return "ok"
+
 
 @app.route('/tictactoe/player/terra', methods=['POST'])
 def terra():
